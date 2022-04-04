@@ -6,6 +6,12 @@
  * 
  * Note that album - song is a one-to-many relationship, so no bridge table is needed.
  */
+CREATE TABLE Songs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(70) NOT NULL,
+    album_id INTEGER NOT NULL,
+    FOREIGN KEY(album_id) REFERENCES Albums(id)
+);
 
 CREATE TABLE Albums (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,6 +34,16 @@ VALUES
     ('California', 'Blink-182', 2016)
 ;
 
+INSERT INTO Songs
+    (name, album_id)
+VALUES
+    ('Another Brick in the Wall', 1),
+    ('Here Comes the Sun', 2),
+    ('New Kid in Town', 3),
+    ('Im on Fire', 4),
+    ('Shes Out of Her Mind', 5)
+;
+
 /* Required to get result in column format */
 .headers on
 .mode column
@@ -42,16 +58,27 @@ SELECT * FROM Albums;
 /* 
  * TODO: Write a table join query to construct a table of Song Name : Album Name
  */
+SELECT Songs.name, Albums.name FROM Songs
+JOIN Albums ON Songs.album_id = Albums.id;
 
 /*
  * TODO: Find all albums published between 1970 and 1980.
  */
+SELECT * FROM Albums
+WHERE year_published >= 1970 
+AND year_published <= 1980;
 
 /*
  * TODO: Find all songs on albums published between 1970 and 1980. 
  *(Hint: Use a table join.)
  */
+SELECT * FROM Songs
+JOIN Albums ON Songs.album_id = Albums.id
+WHERE year_published >= 1970 
+AND year_published <= 1980;
  
 /*
  * TODO: Find all songs on albums with names containing 'California'.
  */
+SELECT * FROM Songs
+WHERE name LIKE "%california%"
